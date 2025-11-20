@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Obstetricia{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-12">
+    <div class="dashboard-welcome shadow-sm p-4 rounded-3 mb-2">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-circle bg-primary text-white" style="width: 56px; height: 56px; font-size: 1.5rem;"></div>
+        <div>
+          <h3 class="mb-1 fw-bold">¡Hola, {{ request.user.first_name|default:request.user.username }}!</h3>
+          <p class="mb-0 text-muted"><i class="ri-shield-user-line me-1"></i>{{ request.user.perfil.rol|title }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card p-4 shadow-sm border-0 h-100">
+          <div class="d-flex align-items-center">
+            <div class="rounded-3 p-3 me-3"
+              style="background: linear-gradient(135deg, rgba(14, 116, 144, 0.1), rgba(6, 182, 212, 0.15)); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+              <i class="ri-baby-line" style="font-size: 1.75rem; color: #0e7490;"></i>
+            </div>
+            <div>
+              <h6 class="text-muted text-uppercase small mb-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">
+                Partos (Mes)</h6>
+              <h3 class="mb-0 fw-bold" style="color: #0e7490;">{{ total_mes|default:0 }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 shadow-sm border-0 h-100">
+          <div class="d-flex align-items-center">
+            <div class="rounded-3 p-3 me-3"
+              style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.15)); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+              <i class="ri-calendar-check-line" style="font-size: 1.75rem; color: #3b82f6;"></i>
+            </div>
+            <div>
+              <h6 class="text-muted text-uppercase small mb-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">
+                Partos (30 días)</h6>
+              <h3 class="mb-0 fw-bold" style="color: #3b82f6;">{{ total_30dias|default:0 }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 shadow-sm border-0 h-100">
+          <div class="d-flex align-items-center">
+            <div class="rounded-3 p-3 me-3"
+              style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.15)); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+              <i class="ri-file-list-3-line" style="font-size: 1.75rem; color: #10b981;"></i>
+            </div>
+            <div>
+              <h6 class="text-muted text-uppercase small mb-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">Mis
+                Registros</h6>
+              <h3 class="mb-0 fw-bold" style="color: #10b981;">{{ mis_registros.count }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card mb-4 shadow-sm border-0">
+      <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0 fw-bold"><i class="ri-history-line me-2 text-primary"></i>Actividad Reciente</h5>
+        <a href="{% url 'registros:lista_partos' %}" class="btn btn-sm btn-outline-primary">Ver todo <i
+            class="ri-arrow-right-line ms-1"></i></a>
+      </div>
+      <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+          {% for p in recientes %}
+          <a href="{% url 'registros:detalle_parto' p.id %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1">{{ p.madre.nombres }} {{ p.madre.apellidos }}</h6>
+              <small>{{ p.fecha_hora|date:"SHORT_DATETIME_FORMAT" }}</small>
+            </div>
+            <p class="mb-1 text-muted">
+              Registrado por:
+              {% if p.created_by %}
+              {{ p.created_by.get_full_name|default:p.created_by.username }}
+              {% else %}
+              Sistema
+              {% endif %}
+            </p>
+          </a>
+          {% empty %}
+          <div class="text-muted p-3">No hay registros recientes.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card action-card h-100 shadow-sm border-0 text-center p-4">
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle"
+            style="width: 64px; height: 64px; background: linear-gradient(135deg, #0e7490, #06b6d4); box-shadow: 0 8px 16px rgba(14, 116, 144, 0.2);">
+            <i class="ri-add-line" style="font-size: 2rem; color: white;"></i>
+          </div>
+        </div>
+        <h5 class="card-title fw-bold mb-2">Registrar Parto</h5>
+        <p class="card-text text-muted small mb-3">Formulario para madre, parto y recién nacido</p>
+        <a href="{% url 'registros:registro_parto' %}" class="btn btn-primary w-100"><i
+            class="ri-file-add-line me-2"></i>Abrir formulario</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card action-card h-100 shadow-sm border-0 text-center p-4">
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle"
+            style="width: 64px; height: 64px; background: white; border: 2px solid #0e7490; box-shadow: 0 8px 16px rgba(14, 116, 144, 0.1);">
+            <i class="ri-search-line" style="font-size: 2rem; color: #0e7490;"></i>
+          </div>
+        </div>
+        <h5 class="card-title fw-bold mb-2">Consultar Registros</h5>
+        <p class="card-text text-muted small mb-3">Búsqueda y listado de atenciones</p>
+        <a href="{% url 'registros:lista_partos' %}" class="btn btn-outline-primary w-100"><i
+            class="ri-search-2-line me-2"></i>Consultar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card action-card h-100 shadow-sm border-0 text-center p-4">
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle"
+            style="width: 64px; height: 64px; background: white; border: 2px solid #64748b; box-shadow: 0 8px 16px rgba(100, 116, 139, 0.1);">
+            <i class="ri-women-line" style="font-size: 2rem; color: #64748b;"></i>
+          </div>
+        </div>
+        <h5 class="card-title fw-bold mb-2">Directorio de Madres</h5>
+        <p class="card-text text-muted small mb-3">Listado completo de pacientes</p>
+        <a href="{% url 'registros:lista_madres' %}" class="btn btn-outline-primary w-100"><i
+            class="ri-group-line me-2"></i>Consultar</a>
+      </div>
+    </div>
+  </div>
+
+  {% if request.user.perfil.rol == 'administrador' %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card action-card h-100 shadow-sm border-primary-subtle">
+      <div class="card-body">
+        <h5 class="card-title">Gestión de Usuarios</h5>
+        <p class="card-text text-muted">Crear, editar y desactivar cuentas.</p>
+        <a href="{% url 'cuentas:gestionar_usuarios' %}" class="btn btn-primary">Administrar</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Lista de Partos · Obstetricia{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold text-primary">Gestión de Partos</h2>
+    <p class="text-muted mb-0">Administre y consulte los registros de partos del sistema.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'registros:registro_parto' %}" class="btn btn-primary shadow-sm">
+      <i class="bi bi-plus-lg"></i> Nuevo Registro
+    </a>
+    <a href="{% url 'registros:importar_partos' %}" class="btn btn-outline-primary shadow-sm">
+      <i class="bi bi-upload"></i> Importar
+    </a>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4 border-0" style="overflow: visible;">
+  <div class="card-body bg-light rounded-3" style="overflow: visible;">
+    <form method="get" id="export-form" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label small text-muted">Buscar</label>
+        <input type="text" name="q" value="{{ query }}" placeholder="RUT, nombre o apellido..." class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small text-muted">Desde</label>
+        <input type="date" name="start" class="form-control" value="{{ request.GET.start }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small text-muted">Hasta</label>
+        <input type="date" name="end" class="form-control" value="{{ request.GET.end }}">
+      </div>
+      <div class="col-md-2 d-flex gap-2">
+        <button class="btn btn-secondary w-100" type="submit">Filtrar</button>
+        <div class="dropdown">
+          <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Exportar
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="z-index: 1050;">
+            <li><a class="dropdown-item" href="#" id="export-excel-btn"><i class="bi bi-file-earmark-excel"></i>
+                Excel</a></li>
+            <li><a class="dropdown-item" href="#" id="export-pdf-btn"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if partos %}
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>RUT</th>
+      <th>Madre</th>
+      <th>Fecha y hora</th>
+      <th>Registrado por</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for parto in partos %}
+    <tr>
+      <td>{{ parto.madre.rut }}</td>
+      <td>{{ parto.madre.nombres }} {{ parto.madre.apellidos }}</td>
+      <td>{{ parto.fecha_hora|date:"SHORT_DATETIME_FORMAT" }}</td>
+      <td>{{ parto.created_by.get_full_name|default:parto.created_by.username }}</td>
+      <td>
+        <a href="{% url 'registros:detalle_parto' parto.id %}" class="btn btn-sm btn-outline-primary">Ver</a>
+        <a href="{% url 'registros:editar_parto' parto.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if partos.has_previous %}
+    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ partos.previous_page_number }}">Anterior</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+    {% endif %}
+
+    <li class="page-item active"><span class="page-link">Página {{ partos.number }} de {{ partos.paginator.num_pages
+        }}</span></li>
+
+    {% if partos.has_next %}
+    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ partos.next_page_number }}">Siguiente</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% else %}
+<p class="text-muted">No se encontraron registros.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function handleExport(url) {
+    const form = document.getElementById('export-form');
+    const start = form.elements['start'].value;
+    const end = form.elements['end'].value;
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+    if ([...params].length) url += '?' + params.toString();
+    window.location = url;
+  }
+
+  document.getElementById('export-excel-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    handleExport("{% url 'registros:exportar_partos' %}");
+  });
+
+  document.getElementById('export-pdf-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    handleExport("{% url 'registros:exportar_partos_pdf' %}");
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Importar Registros · Obstetricia{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Importar Registros desde Excel</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    El archivo Excel debe tener el formato estándar exportado por el sistema (hojas: Madres, Partos,
+                    Recién Nacidos).
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="file" class="form-label">Seleccionar archivo Excel</label>
+                        <input type="file" name="file" id="file" class="form-control" accept=".xlsx, .xls" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'registros:lista_partos' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-upload"></i> Importar Datos
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

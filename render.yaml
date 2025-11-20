@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: proyecto-web
+    env: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn obstetricia.wsgi --bind 0.0.0.0:$PORT
+
+databases:
+  - name: proyecto-db
+    engine: postgresql
+    version: "14"
+    plan: free

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Información del Proyecto - PI1{% endblock %}
+
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">Prototipo PI1 - Obstetricia</h2>
+      <p class="text-muted">Página de información y viñetas categorizadas del proyecto.</p>
+
+      <h5 class="mt-4">Descripción</h5>
+      <ul>
+        <li>Prototipo para el registro y gestión de partos.</li>
+        <li>Permite registrar madres, partos y recién nacidos.</li>
+        <li>Incluye herramientas para búsqueda y exportes.</li>
+      </ul>
+
+      <h5 class="mt-3">Características</h5>
+      <ul>
+        <li>Formularios compuestos con validación cliente y servidor.</li>
+        <li>Exportes a Excel (pandas / openpyxl).</li>
+        <li>Búsqueda rápida de madres por RUT y filtros por fecha.</li>
+        <li>Panel administrativo con permisos básicos.</li>
+      </ul>
+
+      <h5 class="mt-3">Uso</h5>
+      <ul>
+        <li>Crear y activar un entorno virtual.</li>
+        <li>Instalar dependencias y ejecutar <code>migrate</code>.</li>
+        <li>Crear superusuario y levantar <code>runserver</code>.</li>
+      </ul>
+
+      <h5 class="mt-3">Mantenimiento</h5>
+      <ul>
+        <li>Configurar <code>DEBUG = False</code> y <code>ALLOWED_HOSTS</code>.</li>
+        <li>Usar variables de entorno para <code>SECRET_KEY</code>.</li>
+        <li>Agregar monitoreo y backups para la base de datos.</li>
+      </ul>
+
+      <h5 class="mt-3">Contacto / Soporte</h5>
+      <ul>
+        <li>Abrir un issue en el repositorio con información reproducible.</li>
+        <li>Incluir logs y pasos para reproducir el problema.</li>
+      </ul>
+
+    </div>
+  </div>
+{% endblock %}

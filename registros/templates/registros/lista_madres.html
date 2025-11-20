@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+{% block title %}Lista de Madres · Obstetricia{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Lista de Madres</h3>
+  <div class="d-flex gap-2">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarMadre">
+      <i class="ri-add-line me-1"></i>Agregar Madre
+    </button>
+    <a href="{% url 'cuentas:dashboard' %}" class="btn btn-outline-secondary">Volver al Dashboard</a>
+  </div>
+</div>
+
+<form method="get" class="mb-3">
+  <div class="input-group">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar por RUT, nombre o apellido"
+      class="form-control">
+    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+  </div>
+</form>
+
+{% if madres %}
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>RUT</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Edad</th>
+        <th>Teléfono</th>
+        <th>Previsión</th>
+        <th>Estado Civil</th>
+        <th>Fecha de Registro</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for madre in madres %}
+      <tr>
+        <td>{{ madre.rut }}</td>
+        <td>{{ madre.nombres }}</td>
+        <td>{{ madre.apellidos }}</td>
+        <td>{{ madre.fecha_nacimiento|date:"d/m/Y" }}</td>
+        <td>{{ madre.edad }} años</td>
+        <td>{{ madre.telefono }}</td>
+        <td>{{ madre.get_prevision_display }}</td>
+        <td>{{ madre.get_estado_civil_display }}</td>
+        <td>{{ madre.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+          <a href="{% url 'registros:registro_parto_madre' madre.id %}" class="btn btn-sm btn-primary">
+            <i class="ri-add-line me-1"></i>Agregar parto
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if madres.has_previous %}
+    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ madres.previous_page_number }}">Anterior</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+    {% endif %}
+
+    <li class="page-item active"><span class="page-link">Página {{ madres.number }} de {{ madres.paginator.num_pages
+        }}</span></li>
+
+    {% if madres.has_next %}
+    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ madres.next_page_number }}">Siguiente</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% else %}
+<div class="alert alert-info">
+  <i class="ri-information-line me-2"></i>
+  No se encontraron madres registradas{% if query %} que coincidan con "{{ query }}"{% endif %}.
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block modals %}
+<!-- Modal para Agregar Madre -->
+<div class="modal fade" id="modalAgregarMadre" tabindex="-1" aria-labelledby="modalAgregarMadreLabel" aria-hidden="true"
+  role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAgregarMadreLabel">
+          <i class="ri-user-add-line me-2"></i>Agregar Nueva Madre
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form method="post" id="formAgregarMadre" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="modal-body">
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            {{ error }}
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              {{ form.rut.label_tag }}
+              {{ form.rut }}
+              {% if form.rut.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.rut.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.nombres.label_tag }}
+              {{ form.nombres }}
+              {% if form.nombres.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.nombres.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.apellidos.label_tag }}
+              {{ form.apellidos }}
+              {% if form.apellidos.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.apellidos.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.fecha_nacimiento.label_tag }}
+              {{ form.fecha_nacimiento }}
+              {% if form.fecha_nacimiento.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.fecha_nacimiento.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.estado_civil.label_tag }}
+              {{ form.estado_civil }}
+              {% if form.estado_civil.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.estado_civil.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.prevision.label_tag }}
+              {{ form.prevision }}
+              {% if form.prevision.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.prevision.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-8">
+              {{ form.direccion.label_tag }}
+              {{ form.direccion }}
+              {% if form.direccion.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.direccion.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              {{ form.telefono.label_tag }}
+              {{ form.telefono }}
+              {% if form.telefono.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.telefono.errors %}
+                {{ error }}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="ri-save-line me-1"></i>Crear Madre
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Estilos del modal - asegurar funcionalidad */
+  #modalAgregarMadre {
+    z-index: 1055 !important;
+  }
+
+  #modalAgregarMadre .modal-dialog {
+    z-index: 1056 !important;
+    margin: 1.75rem auto;
+    max-width: 800px;
+  }
+
+  #modalAgregarMadre .modal-content {
+    background-color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+    border-radius: var(--border-radius-lg) !important;
+  }
+
+  #modalAgregarMadre .modal-body {
+    background-color: #ffffff !important;
+    color: #2C3E50 !important;
+    padding: 1.5rem !important;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  #modalAgregarMadre .modal-header {
+    background: var(--gradient-primary) !important;
+    color: #ffffff !important;
+    border-bottom: none !important;
+    padding: 1.25rem 1.5rem !important;
+  }
+
+  #modalAgregarMadre .modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.9;
+  }
+
+  #modalAgregarMadre .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+
+  #modalAgregarMadre .modal-footer {
+    border-top: 1px solid rgba(91, 143, 163, 0.1) !important;
+    padding: 1rem 1.5rem !important;
+    background-color: #ffffff !important;
+  }
+
+  #modalAgregarMadre .form-label {
+    color: #2C3E50 !important;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  #modalAgregarMadre .form-control,
+  #modalAgregarMadre .form-select {
+    background-color: #ffffff !important;
+    color: #2C3E50 !important;
+    border: 1px solid rgba(91, 143, 163, 0.2) !important;
+  }
+
+  #modalAgregarMadre .form-control:focus,
+  #modalAgregarMadre .form-select:focus {
+    background-color: #ffffff !important;
+    color: #2C3E50 !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(91, 143, 163, 0.1) !important;
+    outline: none !important;
+  }
+
+  /* Asegurar que el backdrop no bloquee */
+  .modal-backdrop {
+    z-index: 1050 !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Asegurar que los botones sean clickeables */
+  #modalAgregarMadre .btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    'use strict';
+
+    // Esperar a que Bootstrap esté cargado
+    if (typeof bootstrap === 'undefined') {
+      console.error('Bootstrap no está cargado');
+      return;
+    }
+
+    var modalElement = document.getElementById('modalAgregarMadre');
+    if (!modalElement) {
+      console.error('Modal no encontrado');
+      return;
+    }
+
+    var modalInstance = null;
+
+    // Inicializar modal
+    try {
+      modalInstance = new bootstrap.Modal(modalElement, {
+        backdrop: true,
+        keyboard: true,
+        focus: true
+      });
+    } catch (e) {
+      console.error('Error al inicializar modal:', e);
+    }
+
+    // Auto-abrir modal si hay errores
+    {% if form.errors %}
+    if (modalInstance) {
+      setTimeout(function () {
+        modalInstance.show();
+      }, 100);
+    }
+    {% endif %}
+
+    // Limpiar formulario al cerrar
+    modalElement.addEventListener('hidden.bs.modal', function () {
+      var form = document.getElementById('formAgregarMadre');
+      if (form) {
+        form.reset();
+        // Limpiar errores
+        var errorDivs = form.querySelectorAll('.invalid-feedback, .alert-danger');
+        errorDivs.forEach(function (div) {
+          div.remove();
+        });
+        var inputs = form.querySelectorAll('.form-control, .form-select');
+        inputs.forEach(function (input) {
+          input.classList.remove('is-invalid');
+        });
+      }
+    });
+
+    // Focus en primer campo al abrir
+    modalElement.addEventListener('shown.bs.modal', function () {
+      var firstInput = modalElement.querySelector('input:not([type="hidden"]), select, textarea');
+      if (firstInput) {
+        setTimeout(function () {
+          firstInput.focus();
+        }, 150);
+      }
+    });
+
+    // Asegurar que los botones funcionen
+    var cancelBtn = modalElement.querySelector('[data-bs-dismiss="modal"]');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+      });
+    }
+  })();
+</script>
+{% endblock %}

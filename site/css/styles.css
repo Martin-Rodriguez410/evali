@@ -1,0 +1,16 @@
+/* Estilos simples para la página estática */
+:root{
+  --bg:#f7fafc;
+  --card:#ffffff;
+  --accent:#2b6cb0;
+  --text:#1a202c;
+}
+*{box-sizing:border-box}
+body{font-family:Segoe UI, Roboto, Arial, sans-serif;background:var(--bg);color:var(--text);margin:0}
+.container{max-width:900px;margin:0 auto;padding:24px}
+.hero{background:linear-gradient(90deg,var(--accent),#2c5282);color:#fff;padding:28px 0;margin-bottom:18px}
+.hero h1{margin:0;font-size:1.6rem}
+section{background:var(--card);border-radius:8px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+section h2{margin-top:0;color:var(--accent)}
+ul{margin:8px 0 0 20px}
+.site-footer{padding:12px 0;text-align:center;color:#666;font-size:0.9rem}
