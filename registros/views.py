@@ -308,6 +308,38 @@ def madre_typeahead(request):
 
 
 @login_required
+def profesionales_list(request):
+    """API que devuelve lista de profesionales (usuarios) con RUT, nombres, apellidos y área."""
+    from cuentas.models import Usuario
+    
+    q = request.GET.get('q', '').strip()
+    profesionales = Usuario.objects.filter(is_active=True).select_related('rol').order_by('first_name', 'last_name')
+    
+    if q:
+        # Buscar por RUT, nombre o apellido
+        profesionales = profesionales.filter(
+            Q(run__icontains=q) |
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q) |
+            Q(username__icontains=q)
+        )
+    
+    results = []
+    for prof in profesionales[:100]:  # Limitar a 100 resultados para permitir más opciones
+        area = prof.rol.nombre if prof.rol else 'Sin área'
+        results.append({
+            'id': prof.id,
+            'rut': prof.run or '',
+            'nombres': prof.first_name or '',
+            'apellidos': prof.last_name or '',
+            'area': area,
+            'nombre_completo': f"{prof.first_name or ''} {prof.last_name or ''}".strip() or prof.username
+        })
+    
+    return JsonResponse({'profesionales': results})
+
+
+@login_required
 @require_POST
 def madre_create(request):
     """API para crear una Madre rápidamente desde un modal o AJAX.

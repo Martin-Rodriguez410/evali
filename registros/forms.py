@@ -165,29 +165,365 @@ class PartoForm(forms.ModelForm):
             '%d-%m-%Y %H:%M',   # form uses day-month-year in templates
         ]
     )
+    
+    # Campos para "Trabajo de Parto"
+    paridad = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': '0',
+            'step': '1'
+        }),
+        label="Paridad"
+    )
+    
+    semanas_obstetricas = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': '0',
+            'step': '1'
+        }),
+        label="Semanas Obstétricas"
+    )
+    
+    semanas_obstetricas_dias = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': '0',
+            'step': '1'
+        }),
+        label="Semanas Obstétricas (días)"
+    )
+    
+    monitor = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Monitor"
+    )
+    
+    ttc = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="TTC"
+    )
+    
+    induccion = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Inducción"
+    )
+    
+    tipo_parto = forms.ChoiceField(
+        required=False,
+        choices=[
+            ('', '---------'),
+            ('cesarea_urgencia', 'Cesárea Urgencia'),
+            ('cesarea_electiva', 'Cesárea Electiva'),
+            ('distocico', 'Distocico'),
+            ('eutocico', 'Eutocico'),
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Tipo de Parto"
+    )
+    
+    alumbramiento_dirigido = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Alumbramiento dirigido"
+    )
+    
+    clasificacion_robson = forms.ChoiceField(
+        required=False,
+        choices=[
+            ('', '---------'),
+            ('grupo_1', 'Grupo 1'),
+            ('grupo_2a', 'Grupo 2A'),
+            ('grupo_2b', 'Grupo 2B'),
+            ('grupo_3', 'Grupo 3'),
+            ('grupo_4a', 'Grupo 4A'),
+            ('grupo_4b', 'Grupo 4B'),
+            ('grupo_5a', 'Grupo 5A'),
+            ('grupo_5b', 'Grupo 5B'),
+            ('grupo_6', 'Grupo 6'),
+            ('grupo_7', 'Grupo 7'),
+            ('grupo_8', 'Grupo 8'),
+            ('grupo_10', 'Grupo 10'),
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Clasificación de Robson"
+    )
+    
+    acompanamiento_parto = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Acompañamiento Parto"
+    )
+    
+    motivo_parto_no_acompanado = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Ingrese el motivo si el parto no fue acompañado'
+        }),
+        label="Motivo Parto NO acompañado"
+    )
+    
+    persona_acompanante = forms.ChoiceField(
+        required=False,
+        choices=[
+            ('', '---------'),
+            ('pareja', 'Pareja'),
+            ('hermano', 'Hermana/o'),
+            ('padre_madre', 'Padre/Madre'),
+            ('tio', 'Tía/o'),
+            ('suegro', 'Suegra/o'),
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Persona Acompañante"
+    )
+    
+    acompanante_secciona_cordon = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Acompañante secciona cordón"
+    )
+    
+    # Campos para "Información de los profesionales"
+    profesional_a_cargo = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el nombre del profesional'
+        }),
+        label="Profesional a cargo",
+        max_length=200
+    )
+    
+    causa_cesarea = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Ingrese la causa de la cesárea si aplica'
+        }),
+        label="Causa cesárea"
+    )
+    
+    observaciones = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Ingrese observaciones adicionales'
+        }),
+        label="Observaciones"
+    )
+    
+    # Campos para "Otros registros"
+    uso_sala_saip = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Uso sala SAIP"
+    )
+    
+    ley_21372_dominga = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Cuales recuerdos (de no entregar justificar motivo)'
+        }),
+        label="Ley N° 21.372 Dominga",
+        help_text="Cuales recuerdos (de no entregar justificar motivo)"
+    )
+    
+    retira_placenta = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Retira placenta"
+    )
+    
+    estampado_placenta = forms.ChoiceField(
+        required=False,
+        choices=[('', '---------'), ('True', 'Sí'), ('False', 'No')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Estampado de placenta"
+    )
+    
+    folio_valido = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el folio válido'
+        }),
+        label="Folio válido",
+        max_length=100
+    )
+    
+    folios_nulos = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese folio/s nulo/s'
+        }),
+        label="Folio/s Nulo/s",
+        max_length=200
+    )
+    
+    manejo_dolor_no_farmacologico = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Ingrese información sobre manejo del dolor no farmacológico'
+        }),
+        label="Manejo del dolor no farmacológico"
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Configurar queryset para profesional_a_cargo
+        from cuentas.models import Usuario
+        self.fields['profesional_a_cargo'].queryset = Usuario.objects.filter(is_active=True)
+        
+        # Prellenar profesional_a_cargo_display si hay un profesional seleccionado
+        if self.instance and self.instance.pk and self.instance.profesional_a_cargo:
+            prof = self.instance.profesional_a_cargo
+            area = prof.rol.nombre if prof.rol else 'Sin área'
+            self.initial['profesional_a_cargo_display'] = f"{prof.first_name or ''} {prof.last_name or ''} - {prof.run or ''} ({area})".strip()
+        
+        # Convertir valores booleanos existentes a strings para los ChoiceFields
+        if self.instance and self.instance.pk:
+            if self.instance.monitor is not None:
+                self.initial['monitor'] = 'True' if self.instance.monitor else 'False'
+            if self.instance.ttc is not None:
+                self.initial['ttc'] = 'True' if self.instance.ttc else 'False'
+            if self.instance.induccion is not None:
+                self.initial['induccion'] = 'True' if self.instance.induccion else 'False'
+            if self.instance.alumbramiento_dirigido is not None:
+                self.initial['alumbramiento_dirigido'] = 'True' if self.instance.alumbramiento_dirigido else 'False'
+            if self.instance.acompanamiento_parto is not None:
+                self.initial['acompanamiento_parto'] = 'True' if self.instance.acompanamiento_parto else 'False'
+            if self.instance.acompanante_secciona_cordon is not None:
+                self.initial['acompanante_secciona_cordon'] = 'True' if self.instance.acompanante_secciona_cordon else 'False'
+            if self.instance.uso_sala_saip is not None:
+                self.initial['uso_sala_saip'] = 'True' if self.instance.uso_sala_saip else 'False'
+            if self.instance.retira_placenta is not None:
+                self.initial['retira_placenta'] = 'True' if self.instance.retira_placenta else 'False'
+            if self.instance.estampado_placenta is not None:
+                self.initial['estampado_placenta'] = 'True' if self.instance.estampado_placenta else 'False'
+    
+    def clean_monitor(self):
+        value = self.cleaned_data.get('monitor')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_ttc(self):
+        value = self.cleaned_data.get('ttc')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_induccion(self):
+        value = self.cleaned_data.get('induccion')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_alumbramiento_dirigido(self):
+        value = self.cleaned_data.get('alumbramiento_dirigido')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_acompanamiento_parto(self):
+        value = self.cleaned_data.get('acompanamiento_parto')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_acompanante_secciona_cordon(self):
+        value = self.cleaned_data.get('acompanante_secciona_cordon')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_uso_sala_saip(self):
+        value = self.cleaned_data.get('uso_sala_saip')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_retira_placenta(self):
+        value = self.cleaned_data.get('retira_placenta')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
+    def clean_estampado_placenta(self):
+        value = self.cleaned_data.get('estampado_placenta')
+        if value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        return None
+    
     class Meta:
         model = Parto
-        fields = ['fecha_hora', 'tipo_parto', 'semanas_gestacion', 
-                 'tipo_anestesia', 'complicaciones', 'observaciones']
-        widgets = {
-            # fecha_hora widget is provided explicitly above so we don't
-            # need to redefine it here. Keep other widgets below.
-            'tipo_parto': forms.Select(attrs={'class': 'form-select'}),
-            'semanas_gestacion': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': '20',
-                'max': '45'
-            }),
-            'tipo_anestesia': forms.Select(attrs={'class': 'form-select'}),
-            'complicaciones': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3
-            }),
-            'observaciones': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3
-            }),
-        }
+        fields = [
+            'fecha_hora',
+            'paridad',
+            'semanas_obstetricas',
+            'semanas_obstetricas_dias',
+            'monitor',
+            'ttc',
+            'induccion',
+            'tipo_parto',
+            'alumbramiento_dirigido',
+            'clasificacion_robson',
+            'acompanamiento_parto',
+            'motivo_parto_no_acompanado',
+            'persona_acompanante',
+            'acompanante_secciona_cordon',
+            'profesional_a_cargo',
+            'causa_cesarea',
+            'observaciones',
+            'uso_sala_saip',
+            'ley_21372_dominga',
+            'retira_placenta',
+            'estampado_placenta',
+            'folio_valido',
+            'folios_nulos',
+            'manejo_dolor_no_farmacologico',
+        ]
 
 class RecienNacidoForm(forms.ModelForm):
     class Meta:

@@ -135,13 +135,13 @@ body.auth-page .container {
     width: 100%;
     height: auto;
     margin: 0 auto 2rem;
-    background: var(--background-white);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
     position: relative;
     z-index: 10;
 }
@@ -154,6 +154,10 @@ body.auth-page .container {
     display: block;
     opacity: 1;
     visibility: visible;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .auth-title {
@@ -362,7 +366,7 @@ body.auth-page .container {
     }
     
     .logo-container {
-        padding: 1.25rem;
+        padding: 0;
     }
 }
 

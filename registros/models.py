@@ -132,9 +132,10 @@ class Madre(models.Model):
 
 class Parto(models.Model):
     TIPO_PARTO_CHOICES = [
-        ('vaginal', 'Vaginal'),
-        ('cesarea', 'Cesárea'),
-        ('forceps', 'Fórceps'),
+        ('cesarea_urgencia', 'Cesárea Urgencia'),
+        ('cesarea_electiva', 'Cesárea Electiva'),
+        ('distocico', 'Distocico'),
+        ('eutocico', 'Eutocico'),
     ]
 
     TIPO_ANESTESIA_CHOICES = [
@@ -145,13 +146,159 @@ class Parto(models.Model):
         ('general', 'General'),
     ]
 
+    CLASIFICACION_ROBSON_CHOICES = [
+        ('grupo_1', 'Grupo 1'),
+        ('grupo_2a', 'Grupo 2A'),
+        ('grupo_2b', 'Grupo 2B'),
+        ('grupo_3', 'Grupo 3'),
+        ('grupo_4a', 'Grupo 4A'),
+        ('grupo_4b', 'Grupo 4B'),
+        ('grupo_5a', 'Grupo 5A'),
+        ('grupo_5b', 'Grupo 5B'),
+        ('grupo_6', 'Grupo 6'),
+        ('grupo_7', 'Grupo 7'),
+        ('grupo_8', 'Grupo 8'),
+        ('grupo_10', 'Grupo 10'),
+    ]
+
+    PERSONA_ACOMPANANTE_CHOICES = [
+        ('pareja', 'Pareja'),
+        ('hermano', 'Hermana/o'),
+        ('padre_madre', 'Padre/Madre'),
+        ('tio', 'Tía/o'),
+        ('suegro', 'Suegra/o'),
+    ]
+
     madre = models.ForeignKey(Madre, on_delete=models.CASCADE, related_name='partos')
     fecha_hora = models.DateTimeField(db_index=True)
-    tipo_parto = models.CharField(max_length=20, choices=TIPO_PARTO_CHOICES)
-    semanas_gestacion = models.IntegerField(
-        validators=[MinValueValidator(20), MaxValueValidator(45)]
+    
+    # Campos para "Trabajo de Parto"
+    paridad = models.IntegerField(
+        validators=[MinValueValidator(0)],
+        null=True,
+        blank=True,
+        verbose_name="Paridad"
     )
-    tipo_anestesia = models.CharField(max_length=20, choices=TIPO_ANESTESIA_CHOICES)
+    semanas_obstetricas = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Semanas Obstétricas"
+    )
+    semanas_obstetricas_dias = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Semanas Obstétricas (días)"
+    )
+    monitor = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Monitor"
+    )
+    ttc = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="TTC"
+    )
+    induccion = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Inducción"
+    )
+    tipo_parto = models.CharField(
+        max_length=20,
+        choices=TIPO_PARTO_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Tipo de Parto"
+    )
+    alumbramiento_dirigido = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Alumbramiento dirigido"
+    )
+    clasificacion_robson = models.CharField(
+        max_length=20,
+        choices=CLASIFICACION_ROBSON_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Clasificación de Robson"
+    )
+    acompanamiento_parto = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Acompañamiento Parto"
+    )
+    motivo_parto_no_acompanado = models.TextField(
+        blank=True,
+        verbose_name="Motivo Parto NO acompañado"
+    )
+    persona_acompanante = models.CharField(
+        max_length=20,
+        choices=PERSONA_ACOMPANANTE_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Persona Acompañante"
+    )
+    acompanante_secciona_cordon = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Acompañante secciona cordón"
+    )
+    
+    # Campos para "Información de los profesionales"
+    profesional_a_cargo = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Profesional a cargo"
+    )
+    causa_cesarea = models.TextField(
+        blank=True,
+        verbose_name="Causa cesárea"
+    )
+    
+    # Campos para "Otros registros"
+    uso_sala_saip = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Uso sala SAIP"
+    )
+    ley_21372_dominga = models.TextField(
+        blank=True,
+        verbose_name="Ley N° 21.372 Dominga",
+        help_text="Cuales recuerdos (de no entregar justificar motivo)"
+    )
+    retira_placenta = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Retira placenta"
+    )
+    estampado_placenta = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Estampado de placenta"
+    )
+    folio_valido = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="Folio válido"
+    )
+    folios_nulos = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Folio/s Nulo/s"
+    )
+    manejo_dolor_no_farmacologico = models.TextField(
+        blank=True,
+        verbose_name="Manejo del dolor no farmacológico"
+    )
+    
+    # Campos antiguos mantenidos como opcionales para compatibilidad
+    semanas_gestacion = models.IntegerField(
+        validators=[MinValueValidator(20), MaxValueValidator(45)],
+        null=True,
+        blank=True
+    )
+    tipo_anestesia = models.CharField(max_length=20, choices=TIPO_ANESTESIA_CHOICES, null=True, blank=True)
     complicaciones = models.TextField(blank=True)
     observaciones = models.TextField(blank=True)
     
@@ -180,8 +327,8 @@ class Parto(models.Model):
         if not allow_old and self.fecha_hora and self.fecha_hora < now - timedelta(hours=48):
             raise ValidationError('No se pueden registrar partos con más de 48 horas de antigüedad.')
 
-        # Validar edad gestacional
-        if self.semanas_gestacion:
+        # Validar edad gestacional (solo si está presente)
+        if self.semanas_gestacion is not None:
             if self.semanas_gestacion < 20:
                 raise ValidationError('La edad gestacional no puede ser menor a 20 semanas.')
             if self.semanas_gestacion > 45:

@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/madre_create/', views.madre_create, name='madre_create'),
     path('madre/create/page/', views.madre_create_page, name='madre_create_page'),
     path('api/madre_typeahead/', views.madre_typeahead, name='madre_typeahead'),
+    path('api/profesionales/', views.profesionales_list, name='profesionales_list'),
     path('detalle/<int:parto_id>/', views.detalle_parto, name='detalle_parto'),
     path('editar/<int:parto_id>/', views.editar_parto, name='editar_parto'),
     path('reportes/', views_reportes.reporte_rem, name='reporte_rem'),
