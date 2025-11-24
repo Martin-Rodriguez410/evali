@@ -148,13 +148,20 @@
     </div>
   </div>
 
-  {% if request.user.perfil.rol == 'administrador' %}
+  {% if user.is_superuser %}
   <div class="col-md-6 col-lg-4">
-    <div class="card action-card h-100 shadow-sm border-primary-subtle">
+    <div class="card action-card h-100 shadow-sm border-0 text-center p-4">
       <div class="card-body">
-        <h5 class="card-title">Gestión de Usuarios</h5>
-        <p class="card-text text-muted">Crear, editar y desactivar cuentas.</p>
-        <a href="{% url 'cuentas:gestionar_usuarios' %}" class="btn btn-primary">Administrar</a>
+        <div class="mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3"
+            style="width: 64px; height: 64px; background: #0e7490; box-shadow: 0 8px 16px rgba(14, 116, 144, 0.2);">
+            <i class="ri-user-settings-line" style="font-size: 2rem; color: white;"></i>
+          </div>
+        </div>
+        <h5 class="card-title fw-bold mb-2">Gestión de Profesionales</h5>
+        <p class="card-text text-muted small mb-3">Ver lista de profesionales y gestionar accesos</p>
+        <a href="{% url 'usuarios:lista_profesionales' %}" class="btn btn-primary w-100"><i
+            class="ri-admin-line me-2"></i>Administrar</a>
       </div>
     </div>
   </div>

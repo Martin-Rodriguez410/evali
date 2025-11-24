@@ -119,3 +119,6 @@ def registro_profesional(request):
             return render(request, "cuentas/registro_profesional.html", {"form": form})
     
     return render(request, "cuentas/registro_profesional.html", {"form": form})
+
+def buttons_showcase(request):
+    return render(request, "buttons_showcase.html")

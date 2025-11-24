@@ -31,6 +31,7 @@ urlpatterns = [
     # Página de información estática del proyecto
     path("info/", site_info, name="site_info"),
     path("registros/", include("registros.urls")),
+    path("usuarios/", include("usuarios.urls")),
 ]
 
 # Agregar las URLs para servir archivos estáticos y media en desarrollo

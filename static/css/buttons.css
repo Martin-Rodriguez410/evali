@@ -1,0 +1,182 @@
+/* Botones Premium - Sistema de Diseño */
+
+/* 1. Botón Gradiente Premium */
+.btn-premium-gradient {
+    background: linear-gradient(135deg, #5B8FA3 0%, #4A7282 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(91, 143, 163, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-premium-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6B9FAA 0%, #5B8FA3 100%);
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.btn-premium-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(91, 143, 163, 0.4);
+    color: white;
+}
+
+.btn-premium-gradient:hover::before {
+    opacity: 1;
+}
+
+.btn-premium-gradient:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(91, 143, 163, 0.3);
+}
+
+/* 2. Botón Glassmorphism (Vidrio) */
+.btn-glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: var(--primary-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    color: var(--primary-dark);
+}
+
+/* 3. Botón Soft UI (Neumorphism) */
+.btn-soft {
+    background: #F0F4F7; /* Coincide con el fondo suave */
+    color: var(--text-dark);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 
+        5px 5px 10px #d1d9e6, 
+        -5px -5px 10px #ffffff;
+    transition: all 0.3s ease;
+}
+
+.btn-soft:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        8px 8px 16px #d1d9e6, 
+        -8px -8px 16px #ffffff;
+    color: var(--primary-color);
+}
+
+.btn-soft:active {
+    transform: translateY(0);
+    box-shadow: inset 5px 5px 10px #d1d9e6, 
+                inset -5px -5px 10px #ffffff;
+}
+
+/* 4. Botón Outline Animado */
+.btn-outline-animated {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    z-index: 1;
+}
+
+.btn-outline-animated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: var(--primary-color);
+    z-index: -1;
+    transition: width 0.3s ease;
+}
+
+.btn-outline-animated:hover {
+    color: white;
+}
+
+.btn-outline-animated:hover::before {
+    width: 100%;
+}
+
+/* 5. Floating Action Button (FAB) */
+.btn-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 10px rgba(91, 143, 163, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 8px 20px rgba(91, 143, 163, 0.5);
+    color: white;
+}
+
+/* 6. Botón Icono Premium */
+.btn-icon-premium {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    color: var(--text-dark);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.btn-icon-premium i {
+    color: var(--primary-color);
+    font-size: 1.1em;
+    transition: transform 0.2s ease;
+}
+
+.btn-icon-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    border-color: var(--primary-light);
+}
+
+.btn-icon-premium:hover i {
+    transform: scale(1.2);
+}

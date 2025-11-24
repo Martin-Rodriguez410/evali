@@ -13,6 +13,23 @@ class Usuario(AbstractUser):
     run = models.CharField(max_length=12, unique=True, null=True, blank=True, help_text="RUN sin puntos, con guión y dígito verificador")
     telefono = models.CharField(max_length=15, null=True, blank=True)
 
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_name="usuario_set",
+        related_query_name="usuario",
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name="usuario_set",
+        related_query_name="usuario",
+    )
+
     class Meta:
         db_table = "usuario"  # si quieres que la tabla se llame 'usuario'
 
@@ -80,7 +97,3 @@ class InviteCode(models.Model):
         if self.single_use and self.used:
             return False
         return True
-
-
-# atencion
-#Si ya tienes tablas usuario y rol en MySQL, usa estos nombres para no romper tu ER. Si son nuevas, Django las crea con migrate.

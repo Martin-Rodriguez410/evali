@@ -21,6 +21,7 @@
 
   <!-- Estilos propios -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/buttons.css' %}">
 
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
@@ -28,8 +29,11 @@
   {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-clinic d-flex flex-column min-vh-100 {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'registro_profesional' %}auth-page{% endif %}">
-  <nav class="navbar navbar-expand-lg sticky-top animate__animated animate__fadeIn" {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'registro_profesional' %}style="display: none;"{% endif %}>
+<body
+  class="bg-clinic d-flex flex-column min-vh-100 {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'registro_profesional' %}auth-page{% endif %}">
+  <nav class="navbar navbar-expand-lg sticky-top animate__animated animate__fadeIn" {% if
+    request.resolver_match.url_name=='login' or request.resolver_match.url_name=='registro_profesional'
+    %}style="display: none;" {% endif %}>
     <div class="container">
       <a class="navbar-brand" href="{% url 'cuentas:dashboard' %}">
         <i class="ri-hospital-line"></i>
@@ -43,26 +47,32 @@
         <ul class="navbar-nav ms-auto align-items-center gap-2">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'cuentas:dashboard' %}">
+            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+              href="{% url 'cuentas:dashboard' %}">
               <i class="ri-home-line me-1"></i> Inicio
             </a>
           </li>
           <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
-                <div class="avatar-circle-sm bg-primary-light text-white d-flex align-items-center justify-content-center rounded-circle" style="width: 32px; height: 32px;">
-                    {{ request.user.username|make_list|first|upper }}
-                </div>
-                <span>{{ request.user.first_name|default:request.user.username }}</span>
-             </a>
-             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                <li><span class="dropdown-header">Rol: {{ request.user.perfil.rol|default:"Matrona" }}</span></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <a class="dropdown-item text-danger" href="{% url 'cuentas:logout' %}">
-                        <i class="ri-logout-box-line me-2"></i> Cerrar Sesión
-                    </a>
-                </li>
-             </ul>
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+              data-bs-toggle="dropdown">
+              <div
+                class="avatar-circle-sm bg-primary-light text-white d-flex align-items-center justify-content-center rounded-circle"
+                style="width: 32px; height: 32px;">
+                {{ request.user.username|make_list|first|upper }}
+              </div>
+              <span>{{ request.user.first_name|default:request.user.username }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+              <li><span class="dropdown-header">Rol: {{ request.user.perfil.rol|default:"Matrona" }}</span></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" href="{% url 'cuentas:logout' %}">
+                  <i class="ri-logout-box-line me-2"></i> Cerrar Sesión
+                </a>
+              </li>
+            </ul>
           </li>
           {% endif %}
         </ul>
@@ -70,18 +80,21 @@
     </div>
   </nav>
 
-  <main class="container py-5" {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'registro_profesional' %}style="padding: 0; margin: 0; max-width: 100%;"{% endif %}>
+  <main class="container py-5" {% if request.resolver_match.url_name=='login' or
+    request.resolver_match.url_name=='registro_profesional' %}style="padding: 0; margin: 0; max-width: 100%;" {% endif
+    %}>
     {% if messages %}
     <div class="row justify-content-center mb-4">
-        <div class="col-md-8">
-            {% for m in messages %}
-            <div class="alert alert-{{ m.tags }} shadow-sm animate__animated animate__fadeIn border-0 d-flex align-items-center">
-              <i class="ri-information-line me-2 fs-5"></i>
-              <div>{{ m }}</div>
-              <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-            </div>
-            {% endfor %}
+      <div class="col-md-8">
+        {% for m in messages %}
+        <div
+          class="alert alert-{{ m.tags }} shadow-sm animate__animated animate__fadeIn border-0 d-flex align-items-center">
+          <i class="ri-information-line me-2 fs-5"></i>
+          <div>{{ m }}</div>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
 
@@ -90,7 +103,8 @@
     </div>
   </main>
 
-  <footer class="mt-auto" {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'registro_profesional' %}style="display: none;"{% endif %}>
+  <footer class="mt-auto" {% if request.resolver_match.url_name=='login' or
+    request.resolver_match.url_name=='registro_profesional' %}style="display: none;" {% endif %}>
     <div class="container">
       <div class="row align-items-center justify-content-between">
         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -104,9 +118,9 @@
         </div>
         <div class="col-md-6 text-center text-md-end">
           <div class="d-flex justify-content-center justify-content-md-end gap-3">
-              <a href="#" class="text-muted hover-primary">Ayuda</a>
-              <a href="#" class="text-muted hover-primary">Privacidad</a>
-              <a href="#" class="text-muted hover-primary">Términos</a>
+            <a href="#" class="text-muted hover-primary">Ayuda</a>
+            <a href="#" class="text-muted hover-primary">Privacidad</a>
+            <a href="#" class="text-muted hover-primary">Términos</a>
           </div>
         </div>
       </div>

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Galería de Botones Premium{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-main mb-3">Nuevos Estilos de Botones</h1>
+        <p class="lead text-muted">Colección de componentes UI modernos y premium</p>
+    </div>
+
+    <!-- 1. Gradient Buttons -->
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 fw-bold text-main">1. Botones Gradiente Premium</h5>
+        </div>
+        <div class="card-body bg-light">
+            <div class="d-flex flex-wrap gap-3 align-items-center justify-content-center p-4">
+                <button class="btn-premium-gradient">Botón Principal</button>
+                <button class="btn-premium-gradient">
+                    <i class="ri-star-line me-2"></i>Con Icono
+                </button>
+                <a href="#" class="btn-premium-gradient text-decoration-none">Como Enlace</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Glassmorphism -->
+    <div class="card mb-5 border-0 shadow-sm"
+        style="background: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80') center/cover;">
+        <div class="card-header bg-transparent border-0 py-3">
+            <h5 class="mb-0 fw-bold text-white text-shadow">2. Glassmorphism (Efecto Vidrio)</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-3 align-items-center justify-content-center p-5">
+                <button class="btn-glass">Efecto Glass</button>
+                <button class="btn-glass">
+                    <i class="ri-blur-off-line me-2"></i>Transparencia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Neumorphism / Soft UI -->
+    <div class="card mb-5 border-0 shadow-sm bg-light">
+        <div class="card-header bg-transparent border-0 py-3">
+            <h5 class="mb-0 fw-bold text-main">3. Soft UI / Neumorphism</h5>
+        </div>
+        <div class="card-body" style="background-color: #F0F4F7;">
+            <div class="d-flex flex-wrap gap-3 align-items-center justify-content-center p-4">
+                <button class="btn-soft">Soft Button</button>
+                <button class="btn-soft">
+                    <i class="ri-fingerprint-line me-2"></i>Táctil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Outline Animated -->
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 fw-bold text-main">4. Outline Animado</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-3 align-items-center justify-content-center p-4">
+                <button class="btn-outline-animated">Hover Me</button>
+                <button class="btn-outline-animated">
+                    <i class="ri-magic-line me-2"></i>Animación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Floating Action Buttons -->
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 fw-bold text-main">5. Floating Action Buttons (FAB)</h5>
+        </div>
+        <div class="card-body bg-light">
+            <div class="d-flex flex-wrap gap-4 align-items-center justify-content-center p-4">
+                <button class="btn-fab">
+                    <i class="ri-add-line"></i>
+                </button>
+                <button class="btn-fab" style="background: var(--secondary-color);">
+                    <i class="ri-check-line"></i>
+                </button>
+                <button class="btn-fab" style="background: var(--danger-color);">
+                    <i class="ri-delete-bin-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Premium Icon Buttons -->
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 fw-bold text-main">6. Botones con Icono Premium</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-3 align-items-center justify-content-center p-4">
+                <button class="btn-icon-premium">
+                    <i class="ri-download-cloud-line"></i> Descargar
+                </button>
+                <button class="btn-icon-premium">
+                    <i class="ri-share-line"></i> Compartir
+                </button>
+                <button class="btn-icon-premium">
+                    <i class="ri-settings-3-line"></i> Configurar
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+</style>
+{% endblock %}

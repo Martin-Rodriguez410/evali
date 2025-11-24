@@ -109,17 +109,10 @@ WSGI_APPLICATION = 'obstetricia.wsgi.application'
 
 AUTH_USER_MODEL = "cuentas.Usuario"
 
-import pymysql
-pymysql.install_as_MySQLdb()
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "obstetricia",
-        "USER": "root",
-        "PASSWORD": "12345678",
-        "HOST": "localhost",
-        "PORT": "3306",
-        "OPTIONS": {"charset": "utf8mb4"},
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
