@@ -489,11 +489,13 @@ def importar_partos(request):
             return redirect('registros:importar_partos')
         
         file = request.FILES['file']
+        import_type = request.POST.get('import_type', 'auto')
+        
         if not file.name.endswith(('.xlsx', '.xls')):
             messages.error(request, 'Formato de archivo no válido. Use Excel (.xlsx, .xls).')
             return redirect('registros:importar_partos')
 
-        result = importar_datos_excel(file, request.user)
+        result = importar_datos_excel(file, request.user, import_type=import_type)
         
         if result['success']:
             counts = result.get('counts', {})

@@ -6,7 +6,10 @@
   <div class="col-12">
     <div class="dashboard-welcome shadow-sm p-4 rounded-3 mb-2">
       <div class="d-flex align-items-center gap-3">
-        <div class="avatar-circle bg-primary text-white" style="width: 56px; height: 56px; font-size: 1.5rem;"></div>
+        <div class="avatar-circle text-white d-flex align-items-center justify-content-center rounded-circle"
+          style="width: 56px; height: 56px; font-size: 1.5rem; background-color: #0e7490;">
+          <i class="ri-nurse-line"></i>
+        </div>
         <div>
           <h3 class="mb-1 fw-bold">¡Hola, {{ request.user.first_name|default:request.user.username }}!</h3>
           <p class="mb-0 text-muted"><i class="ri-shield-user-line me-1"></i>{{ request.user.perfil.rol|title }}</p>
